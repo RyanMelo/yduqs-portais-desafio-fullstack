@@ -10,7 +10,7 @@ datasource db {
 model Enrollment {
   id String @id @default(uuid())
 
-  totalValue           Decimal @db.Money
+  totalValue           Float
   numberOfInstallments Int
 
   name                  String
