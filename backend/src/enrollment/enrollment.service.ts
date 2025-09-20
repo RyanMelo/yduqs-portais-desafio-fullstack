@@ -17,7 +17,8 @@ export class EnrollmentService {
     if (enrollmentExist) {
       throw new BadRequestException('Error ao salvar a matricula.', {
         cause: new Error(),
-        description: 'Já existe um usuário cadastrado com este e-mail ou CPF.',
+        description:
+          'Já existe uma matricula cadastrado com este e-mail ou CPF.',
       });
     }
 
