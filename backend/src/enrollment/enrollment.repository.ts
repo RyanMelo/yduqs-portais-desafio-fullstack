@@ -1,11 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
+import { Prisma, Enrollment } from '@prisma/client';
 
 @Injectable()
 export class EnrollmentRepository {
   constructor(private prisma: PrismaService) {}
 
-  saveEnrollment() {
-    return 'enrrollment saved';
+  async createEnrollment(
+    data: Prisma.EnrollmentCreateInput,
+  ): Promise<Enrollment> {
+    return this.prisma.enrollment.create({
+      data,
+    });
   }
 }
