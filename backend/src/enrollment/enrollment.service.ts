@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { EnrollmentRepository } from './enrollment.repository';
 import { CreateEnrollmentDto } from './create-enrollment.dto';
 import { Enrollment } from '@prisma/client';
@@ -15,7 +15,7 @@ export class EnrollmentService {
       );
 
     if (enrollmentExist) {
-      throw new BadRequestException('Error ao salvar a matricula.', {
+      throw new ConflictException('Error ao salvar a matricula.', {
         cause: new Error(),
         description:
           'Já existe uma matricula cadastrado com este e-mail ou CPF.',
