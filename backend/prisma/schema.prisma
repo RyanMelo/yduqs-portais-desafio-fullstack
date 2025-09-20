@@ -7,3 +7,16 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Matricula {
+  id                      String   @id @default(uuid())
+  valorTotal              Decimal  @db.Money
+  quantidadeParcelas      Int
+  cpf                     String   @unique
+  dataNascimento          DateTime
+  email                   String   @unique
+  celular                 String
+  anoConclusaoEnsinoMedio Int
+  termos                  Boolean
+  notificacoesWhatsApp    Boolean?
+}
