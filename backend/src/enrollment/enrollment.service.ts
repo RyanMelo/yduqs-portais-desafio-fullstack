@@ -8,6 +8,9 @@ export class EnrollmentService {
   constructor(private readonly enrollmentRepository: EnrollmentRepository) {}
 
   saveEnrollment(enrollment: CreateEnrollmentDto): Promise<Enrollment> {
-    return this.enrollmentRepository.createEnrollment(enrollment);
+    return this.enrollmentRepository.createEnrollment({
+      ...enrollment,
+      birthdate: new Date(enrollment.birthdate),
+    });
   }
 }
