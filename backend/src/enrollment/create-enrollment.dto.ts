@@ -25,6 +25,7 @@ export class CreateEnrollmentDto {
 
   @IsString({ message: 'O CPF deve ser uma string.' })
   @IsNotEmpty({ message: 'O campo CPF é obrigatório.' })
+  @MinLength(11, { message: 'O CPF deve ter no minimo 11 caracteres.' })
   readonly documentNumber: string;
 
   @IsNotEmpty({ message: 'O campo Data de Nascimento é obrigatório.' })
@@ -43,6 +44,9 @@ export class CreateEnrollmentDto {
 
   @IsString({ message: 'O telefone deve ser uma string.' })
   @IsNotEmpty({ message: 'O campo telefone é obrigatório.' })
+  @MinLength(11, {
+    message: 'O telefone deve ter no minimo 11 caracteres, com o DDD.',
+  })
   readonly phone: string;
 
   @IsNumber({}, { message: 'O ano de conclusão deve ser um número.' })
