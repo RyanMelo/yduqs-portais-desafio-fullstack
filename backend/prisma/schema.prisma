@@ -8,9 +8,12 @@ datasource db {
 }
 
 model Enrollment {
-  id                    String   @id @default(uuid())
-  totalValue            Decimal  @db.Money
-  numberOfInstallments  Int
+  id String @id @default(uuid())
+
+  totalValue           Decimal @db.Money
+  numberOfInstallments Int
+
+  name                  String
   documentNumber        String   @unique
   birthdate             DateTime
   email                 String   @unique
