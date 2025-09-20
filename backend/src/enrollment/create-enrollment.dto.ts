@@ -1,6 +1,6 @@
 import {
   IsBoolean,
-  IsDate,
+  IsDateString,
   IsEmail,
   IsNotEmpty,
   IsNumber,
@@ -27,8 +27,15 @@ export class CreateEnrollmentDto {
   @IsNotEmpty({ message: 'O campo CPF é obrigatório.' })
   readonly documentNumber: string;
 
-  @IsDate()
-  readonly bithDate: string;
+  @IsNotEmpty({ message: 'O campo Data de Nascimento é obrigatório.' })
+  @IsDateString(
+    {},
+    {
+      message:
+        'A Data de Nascimento deve ser uma data válida no formato string.',
+    },
+  )
+  readonly birthdate: string;
 
   @IsEmail({}, { message: 'E-mail invalido.' })
   @IsNotEmpty({ message: 'O campo E-mail é obrigatório.' })
