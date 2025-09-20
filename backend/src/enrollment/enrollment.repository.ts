@@ -13,4 +13,14 @@ export class EnrollmentRepository {
       data,
     });
   }
+
+  async checkIfEnrollmentExists(email: string, documentNumber: string) {
+    const existingEnrollment = await this.prisma.enrollment.findFirst({
+      where: {
+        OR: [{ email: email }, { documentNumber: documentNumber }],
+      },
+    });
+
+    return !!existingEnrollment;
+  }
 }
