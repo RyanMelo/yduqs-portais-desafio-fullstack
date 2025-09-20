@@ -1,12 +1,16 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { EnrollmentService } from './enrollment.service';
+import { CreateEnrollmentDto } from './create-enrollment.dto';
+import { Enrollment } from '@prisma/client';
 
 @Controller()
 export class EnrollmentController {
-  constructor(private readonly appService: EnrollmentService) {}
+  constructor(private readonly enrollmentService: EnrollmentService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Post('/enrollment')
+  createEnrollment(
+    @Body('enrollment') enrollment: CreateEnrollmentDto,
+  ): Promise<Enrollment> {
+    return this.enrollmentService.saveEnrollment(enrollment);
   }
 }
