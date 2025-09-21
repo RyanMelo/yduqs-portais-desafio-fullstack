@@ -10,8 +10,8 @@ datasource db {
 model Enrollment {
   id String @id @default(uuid())
 
-  totalValue           Float
-  numberOfInstallments Int
+  totalValue           Float?
+  numberOfInstallments Int?
 
   name                  String
   documentNumber        String   @unique
@@ -21,4 +21,11 @@ model Enrollment {
   highSchoolGraduation  Int
   terms                 Boolean
   whatsAppNotifications Boolean?
+
+  courseType CourseType
+}
+
+enum CourseType {
+  INPERSON
+  DISTANCE
 }
