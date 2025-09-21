@@ -15,11 +15,13 @@ export class EnrollmentService {
       );
 
     if (enrollmentExist) {
-      throw new ConflictException(['Error ao salvar a matricula.'], {
-        cause: new Error(),
-        description:
-          'Já existe uma matricula cadastrado com este e-mail ou CPF.',
-      });
+      throw new ConflictException(
+        ['Já existe uma matricula cadastrado com este e-mail ou CPF.'],
+        {
+          cause: new Error(),
+          description: 'Error ao cadastrar matricula.',
+        },
+      );
     }
 
     return this.enrollmentRepository.createEnrollment({

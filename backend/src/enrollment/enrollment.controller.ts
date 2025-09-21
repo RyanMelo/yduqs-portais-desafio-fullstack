@@ -35,8 +35,8 @@ export class EnrollmentController {
       'Já existe uma matricula cadastrada com e-mail ou CPF do usuário à ser cadastrado.',
     schema: {
       example: {
-        message: ['Error ao salvar a matricula.'],
-        error: 'Já existe uma matricula cadastrado com este e-mail ou CPF.',
+        message: ['Já existe uma matricula cadastrado com este e-mail ou CPF.'],
+        error: 'Error ao cadastrar matricula.',
         statusCode: 409,
       },
     },
