@@ -22,7 +22,7 @@ export class CreateEnrollmentDto {
   })
   @IsNumber({}, { message: 'O valor total da matricula deve ser um número.' })
   @IsOptional()
-  readonly totalValue: number;
+  readonly totalValue?: number;
 
   @ApiProperty({
     example: 12,
@@ -31,7 +31,7 @@ export class CreateEnrollmentDto {
   })
   @IsNumber({}, { message: 'A quantidade de parcelas deve ser um número.' })
   @IsOptional()
-  readonly numberOfInstallments: number;
+  readonly numberOfInstallments?: number;
 
   @ApiProperty({
     example: 'INPERSON',
@@ -97,5 +97,5 @@ export class CreateEnrollmentDto {
     message: 'O envio de notificações por WhatsApp ser um valor booleano.',
   })
   @IsOptional()
-  whatsAppNotifications: boolean;
+  whatsAppNotifications?: boolean;
 }
