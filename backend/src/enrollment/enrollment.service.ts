@@ -15,7 +15,7 @@ export class EnrollmentService {
       );
 
     if (enrollmentExist) {
-      throw new ConflictException('Error ao salvar a matricula.', {
+      throw new ConflictException(['Error ao salvar a matricula.'], {
         cause: new Error(),
         description:
           'Já existe uma matricula cadastrado com este e-mail ou CPF.',
