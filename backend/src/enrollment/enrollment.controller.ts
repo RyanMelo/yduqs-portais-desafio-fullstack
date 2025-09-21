@@ -46,7 +46,7 @@ export class EnrollmentController {
     description: 'Erro interno do servidor.',
   })
   createEnrollment(
-    @Body('enrollment') enrollment: CreateEnrollmentDto,
+    @Body() enrollment: CreateEnrollmentDto,
   ): Promise<Enrollment> {
     return this.enrollmentService.saveEnrollment(enrollment);
   }
