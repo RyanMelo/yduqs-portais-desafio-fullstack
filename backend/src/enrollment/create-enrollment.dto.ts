@@ -2,6 +2,7 @@ import {
   IsBoolean,
   IsDateString,
   IsEmail,
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -11,16 +12,36 @@ import {
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
+export type CourseType = 'INPERSON' | 'DISTANCE';
+
 export class CreateEnrollmentDto {
-  @ApiProperty({ example: 3059.19 })
+  @ApiProperty({
+    example: 3059.19,
+    required: false,
+    description: 'Valor obrigatório caso o curso seja presencial.',
+  })
   @IsNumber({}, { message: 'O valor total da matricula deve ser um número.' })
-  @IsNotEmpty({ message: 'O valor total da matricula é obrigatório.' })
+  @IsOptional()
   readonly totalValue: number;
 
-  @ApiProperty({ example: 12 })
+  @ApiProperty({
+    example: 12,
+    required: false,
+    description: 'Valor obrigatório caso o curso seja presencial.',
+  })
   @IsNumber({}, { message: 'A quantidade de parcelas deve ser um número.' })
-  @IsNotEmpty({ message: 'A quantidade de parcelas é obrigatório.' })
+  @IsOptional()
   readonly numberOfInstallments: number;
+
+  @ApiProperty({
+    example: 'INPERSON',
+    description: 'O valor deve ser INPERSON ou DISTANCE.',
+    enum: ['INPERSON', 'DISTANCE'],
+  })
+  @IsEnum(['INPERSON', 'DISTANCE'], {
+    message: 'O tipo do curso deve ser INPERSON ou DISTANCE.',
+  })
+  readonly courseType: CourseType;
 
   @ApiProperty({ example: 'Maria de Lurdes' })
   @MinLength(3, { message: 'O nome deve ter no minimo 3 caracteres.' })
