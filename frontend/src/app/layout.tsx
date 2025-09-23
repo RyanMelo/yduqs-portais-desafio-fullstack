@@ -5,7 +5,7 @@ import "./globals.css";
 import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '../theme';
-import MainHeader from "@/components/MainHeader";
+import MainHeader from "@/components/ui/MainHeader";
 
 const inter = Inter({
   weight: ['300', '400', '500', '700'],
