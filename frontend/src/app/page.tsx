@@ -1,6 +1,6 @@
-import { Container, Box } from "@mui/material";
+import { Container } from "@mui/material";
 import SecodaryHeader from "@/components/ui/SecodaryHeader";
-import Card from "@/components/ui/Card";
+import CardsSection from "@/components/CardsSection";
 
 export default function Home() {
   return (
@@ -11,11 +11,7 @@ export default function Home() {
       />
 
       <Container>
-        <Box sx={{display: 'flex', flexDirection: 'column', gap: 8}}>
-          <Card/>
-
-          <Card/>
-        </Box>
+        <CardsSection/>
       </Container>
     </>
   );
