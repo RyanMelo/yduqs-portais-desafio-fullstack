@@ -8,7 +8,7 @@ export default function CardsSection() {
     <Box sx={(theme) => ({
       display: 'flex',
       flexDirection: 'row',
-      gap: 8,
+      gap: '24px',
 
       [theme.breakpoints.down('md')]: {
         flexDirection: 'column',
