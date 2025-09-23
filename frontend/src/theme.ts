@@ -41,6 +41,10 @@ const theme = createTheme({
           borderRadius: 8,
           boxShadow: 'none',
           padding: '16px 24px',
+
+          "&:hover": {
+            boxShadow: 'none',
+          },
         }
       }
     }
