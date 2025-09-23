@@ -9,7 +9,7 @@ export default function MainHeader() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'start',
-      padding: '16px 88px',
+      padding: '24px 88px',
 
       backgroundColor: 'background.default',
 
