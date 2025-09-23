@@ -5,6 +5,31 @@ const theme = createTheme({
   typography: {
     fontFamily: 'var(--font-inter)',
   },
+  palette: {
+    primary: {
+      main: "#144BC8",
+      dark: "#001F66",
+      light: "#0073FF",
+      contrastText: "#FFFFFF",
+    },
+    secondary: {
+      main: "#EE325D",
+      contrastText: "#FFFFFF",
+    },
+    success: {
+      main: "#28A745",
+      contrastText: "#FFFFFF",
+    },
+    background: {
+      default: "#F5F5F5",
+      paper: "#FFFFFF",
+    },
+    text: {
+      primary: "#121212",
+      secondary: "#555555",
+    },
+    divider: "#E0E0E0",
+  },
   components: {
     MuiButton: {
       styleOverrides: {
