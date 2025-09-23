@@ -4,14 +4,44 @@ import React from 'react';
 import {
   Divider, Typography, Box, Button
 } from '@mui/material';
+import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
 
-export default function Card() {
+type CardType = "WithPrice" | "WithDescription"
+type Modality = "INPERSON" | "EAD"
+
+type CardProps = {
+  cardType: CardType,
+  modality: Modality,
+  round?: string,
+  description?: string,
+  discountPrice?: string,
+  installments?: string,
+  installmentsPrice?: string,
+  spotPrice?: string,
+  address: string,
+  street: string
+  onClick: () => void,
+}
+
+export default function Card({
+ cardType,
+ modality,
+ description,
+ round,
+ discountPrice,
+ installments,
+ installmentsPrice,
+ spotPrice,
+ address,
+ street,
+ onClick
+}: CardProps) {
   return (
     <Box>
       <Box sx={{
         maxWidth: '381px',
 
-        borderRadius: '16px 16px 0 0',
+        borderRadius: '8px 8px 0 0',
         backgroundColor: 'primary.dark',
         boxShadow: 'none',
       }}>
@@ -26,9 +56,17 @@ export default function Card() {
           color: 'primary.contrastText',
           fontSize: '16px',
         }}>
-          <Typography>Presencial</Typography>
-          <Divider orientation="vertical" flexItem/>
-          <Typography>Manhã</Typography>
+          {modality === 'INPERSON' && (
+            <>
+              <Typography sx={{fontSize: '16px', fontWeight: '500'}}>Presencial</Typography>
+              <Divider orientation="vertical" flexItem/>
+              <Typography sx={{fontSize: '16px', fontWeight: '500'}}>{round}</Typography>
+            </>
+          )}
+
+          {modality === 'EAD' && (
+            <Typography sx={{fontSize: '16px', fontWeight: '500'}}>Digital (EaD)</Typography>
+          )}
         </Box>
 
         <Box sx={{
@@ -37,31 +75,47 @@ export default function Card() {
 
           color: 'primary.contrastText',
         }}>
-          <Typography sx={{fontSize: '16px', fontWeight: '500', marginBottom: '4px'}}>
-            De <span style={{textDecoration: 'line-through'}}>R$ 4.752,00</span> por até
-          </Typography>
 
-          <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'end', gap: '8px',}}>
-            <Typography sx={{fontSize: '16px', fontWeight: '500', lineHeight: '1.5'}}>
-              18x
-            </Typography>
-            <Typography sx={(theme) => ({
-              fontSize: '40px',
-              fontWeight: '600',
+          {cardType === "WithPrice" && (
+            <>
+              <Typography sx={{fontSize: '16px', fontWeight: '500', marginBottom: '4px'}}>
+                De <span style={{textDecoration: 'line-through'}}>R$ {discountPrice}</span> por até
+              </Typography>
 
-              [theme.breakpoints.down('md')]: {
-                fontSize: '36px',
-              }
-            })}>
-              R$ 169,95
-            </Typography>
-          </Box>
+              <Box
+                sx={{display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'end', gap: '8px',}}>
+                <Typography sx={{fontSize: '16px', fontWeight: '500', lineHeight: '1.5'}}>
+                  {installments}x
+                </Typography>
+                <Typography sx={(theme) => ({
+                  fontSize: '40px',
+                  fontWeight: '600',
 
-          <Typography sx={{fontSize: '14px', fontWeight: '500'}}>
-            à vista R$ 2.613,60
-          </Typography>
+                  [theme.breakpoints.down('md')]: {
+                    fontSize: '36px',
+                  }
+                })}>
+                  R$ {installmentsPrice}
+                </Typography>
+              </Box>
 
-          <Button variant="contained" color="secondary" sx={{mt: '24px'}}>
+              <Typography sx={{fontSize: '14px', fontWeight: '500'}}>
+                à vista R$ {spotPrice}
+              </Typography>
+            </>
+          )}
+
+          {cardType === "WithDescription" && (
+            <>
+              <InfoOutlineIcon sx={{color: 'primary.contrastText', size: '24px', marginBottom: '8px'}}/>
+
+              <Typography sx={{fontSize: '14px', fontWeight: '400'}}>
+                {description}
+              </Typography>
+            </>
+          )}
+
+          <Button variant="contained" color="secondary" sx={{mt: '24px'}} onClick={onClick}>
             Avançar
           </Button>
         </Box>
@@ -73,17 +127,17 @@ export default function Card() {
         backgroundColor: 'background.main',
         padding: '16px',
         gap: '4px',
-        borderRadius: '0 0 16px 16px',
+        borderRadius: '0 0 8px 8px',
 
         border: "1px solid",
         borderColor: "primary.main",
       }}>
         <Typography sx={{fontSize: '14px', fontWeight: '500', color: 'text.primary', textTransform: "uppercase"}}>
-          campinas - vila industrial
+          {address}
         </Typography>
 
         <Typography sx={{fontSize: '14px', fontWeight: '400', color: 'text.secondary', textTransform: "uppercase"}}>
-          rua dr. sales de oliveira, nº 1661 - vila industrial - camp...
+          {street}
         </Typography>
       </Box>
     </Box>
