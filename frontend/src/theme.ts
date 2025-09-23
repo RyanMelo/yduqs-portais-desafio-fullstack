@@ -61,12 +61,17 @@ const theme = createTheme({
           marginRight: 0,
           width: "100%",
           maxWidth: "100%",
+
+          paddingTop: 32,
           paddingLeft: 88,
           paddingRight: 88,
+          paddingBottom: 56,
 
           [theme.breakpoints.down("md")]: {
+            paddingTop: 24,
             paddingLeft: 16,
             paddingRight: 16,
+            paddingBottom: 24,
           },
         }),
       },
