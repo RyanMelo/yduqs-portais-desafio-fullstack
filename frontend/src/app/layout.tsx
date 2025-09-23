@@ -5,6 +5,7 @@ import "./globals.css";
 import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '../theme';
+import MainHeader from "@/components/MainHeader";
 
 const roboto = Inter({
   weight: ['300', '400', '500', '700'],
@@ -28,7 +29,10 @@ children: React.ReactNode;
     <body className={roboto.variable}>
     <AppRouterCacheProvider>
       <ThemeProvider theme={theme}>
-        {children}
+        <>
+          <MainHeader />
+          {children}
+        </>
       </ThemeProvider>
     </AppRouterCacheProvider>
     </body>
