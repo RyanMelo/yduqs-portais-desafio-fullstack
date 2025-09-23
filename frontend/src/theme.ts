@@ -29,7 +29,7 @@ const theme = createTheme({
     },
     text: {
       primary: "#121212",
-      secondary: "#555555",
+      secondary: "#3D3D3D",
     },
     divider: "#E0E0E0",
   },
@@ -37,19 +37,42 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          fontFamily: 'var(--font-inter)',
-          fontSize: '16px',
-          textTransform: 'none',
+          width: "100%",
+          fontFamily: "var(--font-inter)",
+          fontSize: "16px",
+          textTransform: "none",
           fontWeight: 500,
           borderRadius: 8,
-          boxShadow: 'none',
-          padding: '16px 24px',
+          boxShadow: "none",
+          padding: "16px 24px",
 
           "&:hover": {
-            boxShadow: 'none',
+            boxShadow: "none",
           },
-        }
-      }
+        },
+      },
+      variants: [
+        {
+          props: { color: "primary", variant: "contained" },
+          style: {
+            backgroundColor: "#004AAD",
+            color: "#FFFFFF",
+            "&:hover": {
+              backgroundColor: "#003080",
+            },
+          },
+        },
+        {
+          props: { color: "secondary", variant: "contained" },
+          style: {
+            backgroundColor: "#EE325D",
+            color: "#FFFFFF",
+            "&:hover": {
+              backgroundColor: "#c62848",
+            },
+          },
+        },
+      ],
     },
     MuiContainer: {
       defaultProps: {
