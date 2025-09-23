@@ -50,7 +50,27 @@ const theme = createTheme({
           },
         }
       }
-    }
+    },
+    MuiContainer: {
+      defaultProps: {
+        disableGutters: true,
+      },
+      styleOverrides: {
+        root: ({theme}) => ({
+          marginLeft: 0,
+          marginRight: 0,
+          width: "100%",
+          maxWidth: "100%",
+          paddingLeft: 88,
+          paddingRight: 88,
+
+          [theme.breakpoints.down("md")]: {
+            paddingLeft: 16,
+            paddingRight: 16,
+          },
+        }),
+      },
+    },
   }
 });
 
