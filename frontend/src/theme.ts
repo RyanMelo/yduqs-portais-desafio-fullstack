@@ -4,6 +4,9 @@ import { createTheme } from '@mui/material/styles';
 const theme = createTheme({
   typography: {
     fontFamily: 'var(--font-inter)',
+    allVariants: {
+      lineHeight: 1,
+    },
   },
   palette: {
     primary: {
