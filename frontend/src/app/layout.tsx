@@ -7,7 +7,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from '../theme';
 import MainHeader from "@/components/MainHeader";
 
-const roboto = Inter({
+const inter = Inter({
   weight: ['300', '400', '500', '700'],
   subsets: ['latin'],
   display: 'swap',
@@ -26,7 +26,7 @@ children: React.ReactNode;
 }>) {
   return (
   <html lang="pt-br">
-    <body className={roboto.variable}>
+    <body className={inter.variable}>
     <AppRouterCacheProvider>
       <ThemeProvider theme={theme}>
         <>
