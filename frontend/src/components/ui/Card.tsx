@@ -5,37 +5,14 @@ import {
   Divider, Typography, Box, Button
 } from '@mui/material';
 import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
-
-type CardType = "WithPrice" | "WithDescription"
-type Modality = "INPERSON" | "EAD"
+import { Course } from "@/types/Courses";
 
 type CardProps = {
-  cardType: CardType,
-  modality: Modality,
-  round?: string,
-  description?: string,
-  discountPrice?: string,
-  installments?: string,
-  installmentsPrice?: string,
-  spotPrice?: string,
-  address: string,
-  street: string
+  course: Course
   onClick: () => void,
 }
 
-export default function Card({
- cardType,
- modality,
- description,
- round,
- discountPrice,
- installments,
- installmentsPrice,
- spotPrice,
- address,
- street,
- onClick
-}: CardProps) {
+export default function Card({course, onClick}: CardProps) {
   return (
     <Box>
       <Box sx={{
@@ -56,15 +33,15 @@ export default function Card({
           color: 'primary.contrastText',
           fontSize: '16px',
         }}>
-          {modality === 'INPERSON' && (
+          {course.modality === 'INPERSON' && (
             <>
               <Typography sx={{fontSize: '16px', fontWeight: '500'}}>Presencial</Typography>
               <Divider orientation="vertical" flexItem/>
-              <Typography sx={{fontSize: '16px', fontWeight: '500'}}>{round}</Typography>
+              <Typography sx={{fontSize: '16px', fontWeight: '500'}}>{course.round}</Typography>
             </>
           )}
 
-          {modality === 'EAD' && (
+          {course.modality === 'EAD' && (
             <Typography sx={{fontSize: '16px', fontWeight: '500'}}>Digital (EaD)</Typography>
           )}
         </Box>
@@ -76,16 +53,16 @@ export default function Card({
           color: 'primary.contrastText',
         }}>
 
-          {cardType === "WithPrice" && (
+          {course.cardType === "WithPrice" && (
             <>
               <Typography sx={{fontSize: '16px', fontWeight: '500', marginBottom: '4px'}}>
-                De <span style={{textDecoration: 'line-through'}}>R$ {discountPrice}</span> por até
+                De <span style={{textDecoration: 'line-through'}}>R$ {course.discountPrice}</span> por até
               </Typography>
 
               <Box
                 sx={{display: 'flex', flexDirection: 'row', justifyContent: 'start', alignItems: 'end', gap: '8px',}}>
                 <Typography sx={{fontSize: '16px', fontWeight: '500', lineHeight: '1.5'}}>
-                  {installments}x
+                  {course.installments}x
                 </Typography>
                 <Typography sx={(theme) => ({
                   fontSize: '40px',
@@ -95,22 +72,22 @@ export default function Card({
                     fontSize: '36px',
                   }
                 })}>
-                  R$ {installmentsPrice}
+                  R$ {course.installmentsPrice}
                 </Typography>
               </Box>
 
               <Typography sx={{fontSize: '14px', fontWeight: '500'}}>
-                à vista R$ {spotPrice}
+                à vista R$ {course.spotPrice}
               </Typography>
             </>
           )}
 
-          {cardType === "WithDescription" && (
+          {course.cardType === "WithDescription" && (
             <>
               <InfoOutlineIcon sx={{color: 'primary.contrastText', size: '24px', marginBottom: '8px'}}/>
 
               <Typography sx={{fontSize: '14px', fontWeight: '400'}}>
-                {description}
+                {course.description}
               </Typography>
             </>
           )}
@@ -133,11 +110,11 @@ export default function Card({
         borderColor: "primary.main",
       }}>
         <Typography sx={{fontSize: '14px', fontWeight: '500', color: 'text.primary', textTransform: "uppercase"}}>
-          {address}
+          {course.address}
         </Typography>
 
         <Typography sx={{fontSize: '14px', fontWeight: '400', color: 'text.secondary', textTransform: "uppercase"}}>
-          {street}
+          {course.street}
         </Typography>
       </Box>
     </Box>
