@@ -19,7 +19,6 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Paper,
   useTheme,
 } from '@mui/material';
 import {
@@ -46,11 +45,16 @@ export default function CourseDetailsDrawer({
     setSelectedPayment(event.target.value);
   };
 
+  const handleClose = () => {
+    onClose();
+    setSelectedPayment('');
+  }
+
   return (
     <Drawer
       anchor="right"
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       ModalProps={{
         BackdropProps: {
           sx: {backgroundColor: 'rgba(0, 0, 0, 0.27)'}
@@ -59,7 +63,6 @@ export default function CourseDetailsDrawer({
       PaperProps={{
         sx: {
           maxWidth: '100%',
-          borderRadius: '8px !important',
           boxShadow: '0px 6px 30px 5px rgba(0, 0, 0, 0.12), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 8px 10px -5px rgba(0, 0, 0, 0.2)',
         }
       }}
@@ -71,7 +74,7 @@ export default function CourseDetailsDrawer({
           height: '100vh',
           display: 'flex',
           flexDirection: 'column',
-          backgroundColor: '#FFFFFF',
+          backgroundColor: theme.palette.background.default,
         }}
       >
         <Box
@@ -80,7 +83,7 @@ export default function CourseDetailsDrawer({
             justifyContent: 'space-between',
             alignItems: 'flex-start',
             padding: '24px 16px 24px 32px',
-            borderBottom: '1px solid #E0E0E0',
+            borderBottom: `1px solid ${theme.palette.divider}`,
             gap: 1,
 
             [theme.breakpoints.down('md')]: {
@@ -94,7 +97,7 @@ export default function CourseDetailsDrawer({
               fontWeight: 500,
               fontSize: 32,
               lineHeight: '1.2em',
-              color: '#121212',
+              color: theme.palette.text.primary,
               flex: 1,
 
               [theme.breakpoints.down('md')]: {
@@ -151,7 +154,7 @@ export default function CourseDetailsDrawer({
                   flexDirection: 'column',
                   alignSelf: 'stretch',
                   padding: '24px 0px 16px',
-                  borderBottom: '1px solid #E0E0E0',
+                  borderBottom: `1px solid ${theme.palette.divider}`,
                 }}
               >
                 <Typography
@@ -160,18 +163,25 @@ export default function CourseDetailsDrawer({
                     fontWeight: 500,
                     fontSize: 16,
                     lineHeight: '1.35em',
-                    color: '#121212',
+                    color: theme.palette.text.primary,
                   }}
                 >
                   Qual dessas opções de parcelas você prefere?
                 </Typography>
               </Box>
 
-              <TableContainer component={Paper} sx={{border: 'none', boxShadow: 'none'}}>
+              <TableContainer
+                component={Box}
+                sx={{
+                  borderRadius: '8px',
+                  overflow: 'hidden',
+                  boxShadow: 'none',
+                }}
+              >
                 <Table
                   sx={{
                     border: `1px solid ${theme.palette.primary.main}`,
-                    borderRadius: '8px',
+                    borderRadius: '8px'
                   }}
                 >
                   <TableHead
@@ -189,17 +199,25 @@ export default function CourseDetailsDrawer({
                   >
                     <TableRow>
                       <TableCell
-                        sx={{
+                        align="left"
+                        sx={(theme) => ({
                           backgroundColor: '#144BC8 !important',
                           color: 'background.main !important',
                           opacity: '1 !important',
                           fontWeight: 400,
-                        }}
+                          width: '80%',
+
+                          [theme.breakpoints.down('md')]: {
+                            width: '65%',
+                          }
+
+                        })}
                       >
                         Parcelas
                       </TableCell>
 
                       <TableCell
+                        align="left"
                         sx={{
                           backgroundColor: '#144BC8 !important',
                           color: '#FFFFFF !important',
@@ -212,11 +230,27 @@ export default function CourseDetailsDrawer({
                     </TableRow>
                   </TableHead>
 
-                  <TableBody>
+                  <TableBody sx={{border: `1px solid ${theme.palette.primary.main}`}}>
                     {paymentOptions.map((option) => (
-                      <TableRow key={option.installments} sx={{border: `2px solid ${theme.palette.primary.main}`}}>
-                        <TableCell key={option.installments} align="left"
-                                   sx={{padding: '8px !important', border: 'none'}}>
+                      <TableRow
+                        key={option.installments}
+                        sx={{
+                          borderBottom: `1px solid ${theme.palette.primary.main}`
+                        }}
+                      >
+                        <TableCell
+                          key={option.installments}
+                          align="left"
+                          sx={(theme) => ({
+                            padding: '8px !important',
+                            border: 'none',
+                            width: '80%',
+
+                            [theme.breakpoints.down('md')]: {
+                              width: '65%',
+                            }
+                          })}
+                        >
                           <Box sx={{display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'start'}}>
                             <RadioGroup
                               value={selectedPayment}
@@ -254,7 +288,7 @@ export default function CourseDetailsDrawer({
                             </RadioGroup>
                           </Box>
                         </TableCell>
-                        <TableCell key={option.total} align="right" sx={{padding: '8px !important', border: 'none'}}>
+                        <TableCell key={option.total} align="left" sx={{padding: '8px !important', border: 'none'}}>
                           <Typography
                             sx={{
                               fontSize: 14,
@@ -394,7 +428,7 @@ export default function CourseDetailsDrawer({
         </Box>
 
         <Box
-          sx={{
+          sx={(theme) => ({
             position: 'absolute',
             bottom: 0,
             left: 0,
@@ -408,7 +442,11 @@ export default function CourseDetailsDrawer({
             backgroundColor: theme.palette.background.default,
             boxShadow: '0px 2px 10px 0px rgba(0, 0, 0, 0.12)',
             zIndex: 10,
-          }}
+
+            [theme.breakpoints.down('md')]: {
+              padding: '24px 16px',
+            }
+          })}
         >
           <Button
             variant="contained"
