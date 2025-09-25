@@ -12,14 +12,20 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import theme from "../theme";
+import { useMaskito } from "@maskito/react";
+import { cpfMask, dateMask, phoneMask, yearMask } from "@/utils/masks";
+import { isValidCPF } from "@/utils/valideDocumentNumber";
 
 const enrollmentSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
-  documentNumber: z.string().min(1, "CPF é obrigatório"),
+  documentNumber: z.string().refine(isValidCPF, {message: "CPF inválido"}),
   birthdate: z.string().min(1, "Data de nascimento é obrigatória"),
   email: z.email("E-mail inválido"),
   phone: z.string().min(1, "Telefone é obrigatório"),
-  highSchoolGraduation: z.number("O ano de término do ensino médio é obrigatório").min(1900).max(new Date().getFullYear()),
+  highSchoolGraduation: z
+    .number("O ano de término do ensino médio é obrigatório")
+    .min(1900, "Ano de conclusão inválido")
+    .max(new Date().getFullYear(), "Ano de conclusão inválido"),
   terms: z.boolean().refine((val) => val === true, {
     message: "Você deve aceitar os termos e condições",
   }),
@@ -29,12 +35,18 @@ const enrollmentSchema = z.object({
 type EnrollmentFormData = z.infer<typeof enrollmentSchema>;
 
 export default function EnrollmentForm() {
+  const cpfInputRef = useMaskito({options: cpfMask});
+  const dateInputRef = useMaskito({options: dateMask});
+  const phoneInputRef = useMaskito({options: phoneMask});
+  const yearInputRef = useMaskito({options: yearMask});
+
   const {
     control,
     handleSubmit,
     formState: {errors, isValid},
   } = useForm<EnrollmentFormData>({
     resolver: zodResolver(enrollmentSchema),
+    mode: "onChange",
     defaultValues: {
       name: "",
       documentNumber: "",
@@ -57,8 +69,8 @@ export default function EnrollmentForm() {
         component="form"
         onSubmit={handleSubmit(onSubmit)}
         sx={{
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          flexDirection: 'column',
           gap: '24px',
         }}
       >
@@ -82,6 +94,10 @@ export default function EnrollmentForm() {
           render={({field}) => (
             <TextField
               {...field}
+              ref={cpfInputRef}
+              onInput={(e) =>
+                field.onChange((e.target as HTMLInputElement).value)
+              }
               label="CPF"
               variant="outlined"
               fullWidth
@@ -96,13 +112,14 @@ export default function EnrollmentForm() {
           render={({field}) => (
             <TextField
               {...field}
+              ref={dateInputRef}
+              onInput={(e) =>
+                field.onChange((e.target as HTMLInputElement).value)
+              }
               label="Data de Nascimento"
-              type="date"
+              type="text"
               variant="outlined"
               fullWidth
-              InputLabelProps={{
-                shrink: true,
-              }}
               error={!!errors.birthdate}
               helperText={errors.birthdate?.message}
             />
@@ -129,6 +146,10 @@ export default function EnrollmentForm() {
           render={({field}) => (
             <TextField
               {...field}
+              ref={phoneInputRef}
+              onInput={(e) =>
+                field.onChange((e.target as HTMLInputElement).value)
+              }
               label="Telefone"
               type="tel"
               variant="outlined"
@@ -144,11 +165,12 @@ export default function EnrollmentForm() {
           render={({field}) => (
             <TextField
               {...field}
+              ref={yearInputRef}
               label="Ano de conclusão do ensino médio"
-              type="number"
+              type="text"
               variant="outlined"
               fullWidth
-              onChange={(e) => field.onChange(parseInt(e.target.value, 10))}
+              onChange={(e) => field.onChange(Number(parseInt(e.target.value, 10)))}
               error={!!errors.highSchoolGraduation}
               helperText={errors.highSchoolGraduation?.message}
             />
@@ -190,8 +212,7 @@ export default function EnrollmentForm() {
                     >
                       Li e concordo com os termos do edital, bem como com o tratamento dos meus dados para fins de
                       prospecção dos serviços educacionais prestados pela Estácio e demais instituições de ensino do
-                      mesmo
-                      Grupo Econômico, de acordo com a nossa política de privacidade.
+                      mesmo Grupo Econômico, de acordo com a nossa política de privacidade.
                     </Typography>
                   }
                 />
