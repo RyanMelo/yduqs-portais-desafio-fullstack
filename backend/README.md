@@ -52,7 +52,7 @@ Para iniciar a aplicação em modo de desenvolvimento com watch mode, execute:
 $ yarn run start:dev
 ```
 
-A aplicação estará disponível em `http://localhost:3000`.
+A aplicação estará disponível em `http://localhost:3001`.
 
 ## Arquitetura do Projeto
 
