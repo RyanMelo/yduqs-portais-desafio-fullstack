@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# YDUQS Portal
 
-## Getting Started
+Pagina para formulário de matrícula, construído com [Next.js](https://nextjs.org).
 
-First, run the development server:
+## Começando
+
+Siga estas instruções para configurar e executar o ambiente de desenvolvimento.
+
+### 1. Configure as Variáveis de Ambiente
+
+Primeiro, você precisa configurar as variáveis de ambiente. Copie o arquivo de exemplo para um novo arquivo `.env` na raiz do projeto.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Em seguida, abra o arquivo `.env` e certifique-se de que a `API_URL` está apontando para o endereço correto do backend.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+API_URL=http://localhost:3001
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 2. Instale as Dependências
 
-## Learn More
+Este projeto usa [Yarn](https://yarnpkg.com) como gerenciador de pacotes. Para instalar as dependências necessárias, execute:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+yarn install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. Execute o Servidor de Desenvolvimento
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Com as dependências instaladas, você pode iniciar o servidor de desenvolvimento:
 
-## Deploy on Vercel
+```bash
+yarn dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Isso iniciará a aplicação com [Turbopack](https://turbo.build/pack) para um desenvolvimento mais rápido. Abra [http://localhost:3000](http://localhost:3000) no seu navegador para ver o resultado.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Estrutura do Projeto
+
+O projeto segue uma estrutura orientada a funcionalidades dentro do diretório `src`, organizada da seguinte forma:
+
+-   **/src/app/**: Contém as páginas principais da aplicação, layouts e rotas, seguindo a convenção do App Router do Next.js.
+-   **/src/components/**: Abriga componentes React reutilizáveis usados em toda a aplicação, como cards, formulários e elementos de UI.
+-   **/src/actions/**: Contém actions do lado do servidor, usadas principalmente para lidar com submissões de formulários e mutações.
+-   **/src/store/**: Contém a lógica de gerenciamento de estado, implementada com [Zustand](https://github.com/pmndrs/zustand).
+-   **/src/utils/**: Um diretório para funções utilitárias, incluindo máscaras de entrada, lógica de validação e outros auxiliares.
+-   **/src/theme.ts**: Define o tema da aplicação usando [Material-UI (MUI)](https://mui.com/).
+-   **/public/**: Armazena ativos estáticos como imagens, logotipos e ícones que são servidos diretamente.
+
+## Tecnologias Utilizadas
+
+-   **Framework**: [Next.js](https://nextjs.org)
+-   **Linguagem**: [TypeScript](https://www.typescriptlang.org)
+-   **UI**: [Material-UI (MUI)](https://mui.com/)
+-   **Gerenciamento de Estado**: [Zustand](https://github.com/pmndrs/zustand)
+-   **Formulários**: [React Hook Form](https://react-hook-form.com)
+-   **Validação de Schema**: [Zod](https://zod.dev)
+-   **Linting**: [ESLint](https://eslint.org)
+
+## Scripts Disponíveis
+
+-   `yarn dev`: Inicia o servidor de desenvolvimento com Turbopack.
+-   `yarn build`: Cria uma build da aplicação pronta para produção.
+-   `yarn start`: Inicia o servidor de produção.
+-   `yarn lint`: Executa o linter no código para verificar erros e problemas de estilo.
