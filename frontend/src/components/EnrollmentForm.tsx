@@ -22,6 +22,7 @@ import { isValidCPF } from "@/utils/valideDocumentNumber";
 import { usePaymentSelectedStore } from "@/store/courseStore";
 import { useEffect } from "react";
 import { redirect } from "next/navigation";
+import { createEnrollment } from "@/actions/enrollment";
 
 const enrollmentSchema = z.object({
   name: nameAnsLastNameValidation,
@@ -57,6 +58,7 @@ export default function EnrollmentForm() {
     control,
     handleSubmit,
     formState: {errors, isValid},
+    reset: formReset,
   } = useForm<EnrollmentFormData>({
     resolver: zodResolver(enrollmentSchema),
     mode: "onChange",
@@ -72,13 +74,38 @@ export default function EnrollmentForm() {
     },
   });
 
-  const onSubmit = (data: EnrollmentFormData) => {
-    console.log(data);
-  };
-
   if (!paymentOption) {
     return redirect('/');
   }
+
+  const onSubmit = async (data: EnrollmentFormData) => {
+    try {
+      const cleanedDocumentNumber = data.documentNumber.replace(/\D/g, '');
+      const cleanedPhone = data.phone.replace(/\D/g, '');
+      const formattedBirthdate = data.birthdate.split('/').reverse().join('-');
+
+      const response = await createEnrollment({
+        totalValue: paymentOption.totalValue,
+        numberOfInstallments: paymentOption.numberOfInstallments,
+        courseType: paymentOption.courseType,
+        name: data.name,
+        documentNumber: cleanedDocumentNumber,
+        birthdate: formattedBirthdate,
+        email: data.email,
+        phone: cleanedPhone,
+        highSchoolGraduation: data.highSchoolGraduation,
+        terms: data.terms,
+        whatsAppNotifications: data.whatsAppNotifications,
+      })
+
+      if (response.id) {
+        redirect(`/enrollment/${response.id}`)
+        formReset()
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>
