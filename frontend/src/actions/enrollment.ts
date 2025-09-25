@@ -30,7 +30,7 @@ export type EnrollmentResponse = {
 
 export async function createEnrollment(enrollmentData: EnrollmentData): Promise<EnrollmentResponse> {
   try {
-    const response = await fetch('http://localhost:3001/enrollment', {
+    const response = await fetch(`${process.env.API_URL}/enrollment`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
