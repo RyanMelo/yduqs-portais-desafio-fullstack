@@ -1,9 +1,11 @@
-"use client";
+'use client';
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
   Button,
   Checkbox,
+  CircularProgress,
   FormControlLabel,
   TextField,
   ThemeProvider,
@@ -20,9 +22,10 @@ import {
 } from "@/utils/zodValidations";
 import { isValidCPF } from "@/utils/valideDocumentNumber";
 import { usePaymentSelectedStore } from "@/store/courseStore";
-import { useEffect } from "react";
-import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { createEnrollment } from "@/actions/enrollment";
+import ErrorModal from "./ui/ErrorModal";
 
 const enrollmentSchema = z.object({
   name: nameAnsLastNameValidation,
@@ -43,16 +46,22 @@ const enrollmentSchema = z.object({
 type EnrollmentFormData = z.infer<typeof enrollmentSchema>;
 
 export default function EnrollmentForm() {
+  const router = useRouter();
   const cpfInputRef = useMaskito({options: cpfMask});
   const dateInputRef = useMaskito({options: dateMask});
   const phoneInputRef = useMaskito({options: phoneMask});
   const yearInputRef = useMaskito({options: yearMask});
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<{ title: string; message: string | string[] } | null>(null);
+
   const paymentOption = usePaymentSelectedStore((state) => state.paymentOption);
 
   useEffect(() => {
-    console.log({paymentOption})
-  }, [paymentOption])
+    if (!paymentOption) {
+      router.push('/');
+    }
+  }, [paymentOption, router])
 
   const {
     control,
@@ -74,41 +83,64 @@ export default function EnrollmentForm() {
     },
   });
 
-  if (!paymentOption) {
-    return redirect('/');
-  }
-
   const onSubmit = async (data: EnrollmentFormData) => {
-    try {
-      const cleanedDocumentNumber = data.documentNumber.replace(/\D/g, '');
-      const cleanedPhone = data.phone.replace(/\D/g, '');
-      const formattedBirthdate = data.birthdate.split('/').reverse().join('-');
+    if (!paymentOption) return;
+    setIsLoading(true);
+    setError(null);
 
-      const response = await createEnrollment({
-        totalValue: paymentOption.totalValue,
-        numberOfInstallments: paymentOption.numberOfInstallments,
-        courseType: paymentOption.courseType,
-        name: data.name,
-        documentNumber: cleanedDocumentNumber,
-        birthdate: formattedBirthdate,
-        email: data.email,
-        phone: cleanedPhone,
-        highSchoolGraduation: data.highSchoolGraduation,
-        terms: data.terms,
-        whatsAppNotifications: data.whatsAppNotifications,
-      })
+    const cleanedDocumentNumber = data.documentNumber.replace(/\D/g, '');
+    const cleanedPhone = data.phone.replace(/\D/g, '');
+    const formattedBirthdate = data.birthdate.split('/').reverse().join('-');
 
-      if (response.id) {
-        redirect(`/enrollment/${response.id}`)
-        formReset()
+    const response = await createEnrollment({
+      totalValue: paymentOption.totalValue,
+      numberOfInstallments: paymentOption.numberOfInstallments,
+      courseType: paymentOption.courseType,
+      name: data.name,
+      documentNumber: cleanedDocumentNumber,
+      birthdate: formattedBirthdate,
+      email: data.email,
+      phone: cleanedPhone,
+      highSchoolGraduation: data.highSchoolGraduation,
+      terms: data.terms,
+      whatsAppNotifications: data.whatsAppNotifications,
+    });
+
+    setIsLoading(false);
+
+    if (response.success) {
+      formReset();
+      router.push(`/matricula/sucesso?id=${response.data.id}`);
+    } else {
+      let title = 'Erro';
+      let message: string | string[] = 'Ocorreu um erro inesperado.';
+
+      if (response.error.statusCode === 400) {
+        title = 'Dados inválidos';
+        message = response.error.message;
+      } else if (response.error.statusCode === 409) {
+        title = 'Conflito de Matrícula';
+        message = response.error.message;
+      } else if (response.error.statusCode === 500) {
+        title = 'Erro no Servidor';
+        message = "Ocorreu um error ao realizar sua matricula, tente novamente mais tarde";
       }
-    } catch (error) {
-      console.log(error)
+      setError({ title, message });
     }
   };
 
+  if (!paymentOption) {
+    return null;
+  }
+
   return (
     <ThemeProvider theme={theme}>
+      <ErrorModal
+        open={!!error}
+        onClose={() => setError(null)}
+        title={error?.title || ''}
+        message={error?.message || ''}
+      />
       <Box
         component="form"
         onSubmit={handleSubmit(onSubmit)}
@@ -359,13 +391,13 @@ export default function EnrollmentForm() {
           type="submit"
           variant="contained"
           color={isValid ? "primary" : "error"}
-          disabled={!isValid}
+          disabled={!isValid || isLoading}
           sx={{
             maxWidth: '110px',
             marginTop: '8px'
           }}
         >
-          Avançar
+          {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Avançar'}
         </Button>
       </Box>
     </ThemeProvider>
