@@ -14,31 +14,16 @@ import { z } from "zod";
 import theme from "../theme";
 import { useMaskito } from "@maskito/react";
 import { cpfMask, dateMask, phoneMask, yearMask } from "@/utils/masks";
+import {
+  nameAnsLastNameValidation,
+  birthdateValidation,
+} from "@/utils/zodValidations";
 import { isValidCPF } from "@/utils/valideDocumentNumber";
 
 const enrollmentSchema = z.object({
-  name: z
-    .string()
-    .min(1, "Nome é obrigatório")
-    .refine((name) => {
-      const nameParts = name.trim().split(/\s+/);
-
-      if (nameParts.length < 2) return false;
-
-      const firstName = nameParts[0];
-      if (firstName.length < 2 || !/^[a-zA-ZÀ-ÿ]+$/.test(firstName)) return false;
-
-      for (let i = 1; i < nameParts.length; i++) {
-        const part = nameParts[i];
-        if (part.length < 1 || !/^[a-zA-ZÀ-ÿ]+$/.test(part)) return false;
-      }
-
-      return true;
-    }, {
-      message: "Preencha com o nome e sobrenome",
-    }),
+  name: nameAnsLastNameValidation,
   documentNumber: z.string().refine(isValidCPF, {message: "CPF inválido"}),
-  birthdate: z.string().min(1, "Data de nascimento é obrigatória"),
+  birthdate: birthdateValidation,
   email: z.email("E-mail inválido"),
   phone: z.string().min(1, "Telefone é obrigatório"),
   highSchoolGraduation: z
