@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Drawer,
   Box,
@@ -25,30 +25,35 @@ import {
   Close as CloseIcon,
   Add as AddIcon,
 } from '@mui/icons-material';
-import { Course } from "@/types/Courses";
+import { Course, Modality } from "@/types/Courses";
 
 interface CourseDetailsDrawerProps {
   open: boolean;
   onClose: () => void;
   paymentOptions?: Course['pricesTable'];
+  courseModalitySelected?: Modality,
+  selectedPayment: string;
+  setSelectedPayment: (id: string) => void
+  onNext: () => void;
 }
 
 export default function CourseDetailsDrawer({
   open,
   onClose,
   paymentOptions,
+  selectedPayment,
+  setSelectedPayment,
+  courseModalitySelected,
+  onNext,
 }: CourseDetailsDrawerProps) {
   const theme = useTheme();
-  const [selectedPayment, setSelectedPayment] = useState('');
-
-  const handlePaymentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedPayment(event.target.value);
-  };
 
   const handleClose = () => {
-    onClose();
     setSelectedPayment('');
+    onClose();
   }
+
+  const onNextIsValid = (courseModalitySelected === 'INPERSON' && selectedPayment !== '') || (courseModalitySelected === 'DISTANCE');
 
   return (
     <Drawer
@@ -254,7 +259,7 @@ export default function CourseDetailsDrawer({
                           <Box sx={{display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'start'}}>
                             <RadioGroup
                               value={selectedPayment}
-                              onChange={handlePaymentChange}
+                              onChange={(event) => setSelectedPayment(event.target.value)}
                               sx={{margin: 0}}
                             >
                               <FormControlLabel
@@ -450,7 +455,9 @@ export default function CourseDetailsDrawer({
         >
           <Button
             variant="contained"
-            color="secondary"
+            color={onNextIsValid ? 'secondary' : 'error'}
+            disabled={!onNextIsValid}
+            onClick={onNext}
             fullWidth
             sx={{
               fontFamily: 'Inter',

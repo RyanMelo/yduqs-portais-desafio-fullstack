@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Box,
   Typography,
@@ -8,6 +8,8 @@ import {
 import CourseDetailsDrawer from './ui/CourseDetailsDrawer';
 import Card from "@/components/ui/Card";
 import { Course } from "@/types/Courses";
+import { usePaymentSelectedStore } from "@/store/courseStore";
+import { useRouter } from "next/navigation";
 
 const courses: Course[] = [
   {
@@ -44,6 +46,10 @@ const courses: Course[] = [
 export default function CardsSection() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+  const [selectedPaymentOption, setSelectedPaymentOption] = useState<string>('');
+
+  const navigation = useRouter()
+  const setPaymentOption = usePaymentSelectedStore((state) => state.setPaymentOption);
 
   const handleCardClick = (card: Course) => {
     setSelectedCourse(card);
@@ -53,7 +59,30 @@ export default function CardsSection() {
   const handleDrawerClose = () => {
     setDrawerOpen(false);
     setSelectedCourse(null);
+    setPaymentOption(undefined);
   };
+
+  const handleNextStep = useCallback(() => {
+    const price = selectedCourse?.pricesTable?.find((plan) => plan.installments === Number(selectedPaymentOption))
+
+    if (selectedCourse && selectedCourse.modality === 'DISTANCE') {
+      setPaymentOption({
+        courseType: selectedCourse?.modality,
+        numberOfInstallments: null,
+        totalValue: null,
+      })
+
+      navigation.push('/matricula')
+    } else if (price && selectedCourse && selectedCourse.modality === 'INPERSON') {
+      setPaymentOption({
+        courseType: selectedCourse.modality,
+        numberOfInstallments: price.installments,
+        totalValue: price.total,
+      })
+
+      navigation.push('/matricula')
+    }
+  }, [navigation, selectedCourse, selectedPaymentOption, setPaymentOption])
 
   return (
     <>
@@ -80,7 +109,11 @@ export default function CardsSection() {
       <CourseDetailsDrawer
         open={drawerOpen}
         onClose={handleDrawerClose}
+        courseModalitySelected={selectedCourse?.modality}
         paymentOptions={selectedCourse?.pricesTable}
+        selectedPayment={selectedPaymentOption}
+        setSelectedPayment={setSelectedPaymentOption}
+        onNext={handleNextStep}
       />
     </>
   )
