@@ -17,7 +17,26 @@ import { cpfMask, dateMask, phoneMask, yearMask } from "@/utils/masks";
 import { isValidCPF } from "@/utils/valideDocumentNumber";
 
 const enrollmentSchema = z.object({
-  name: z.string().min(1, "Nome é obrigatório"),
+  name: z
+    .string()
+    .min(1, "Nome é obrigatório")
+    .refine((name) => {
+      const nameParts = name.trim().split(/\s+/);
+
+      if (nameParts.length < 2) return false;
+
+      const firstName = nameParts[0];
+      if (firstName.length < 2 || !/^[a-zA-ZÀ-ÿ]+$/.test(firstName)) return false;
+
+      for (let i = 1; i < nameParts.length; i++) {
+        const part = nameParts[i];
+        if (part.length < 1 || !/^[a-zA-ZÀ-ÿ]+$/.test(part)) return false;
+      }
+
+      return true;
+    }, {
+      message: "Preencha com o nome e sobrenome",
+    }),
   documentNumber: z.string().refine(isValidCPF, {message: "CPF inválido"}),
   birthdate: z.string().min(1, "Data de nascimento é obrigatória"),
   email: z.email("E-mail inválido"),
@@ -69,6 +88,7 @@ export default function EnrollmentForm() {
         component="form"
         onSubmit={handleSubmit(onSubmit)}
         sx={{
+          maxWidth: '660px',
           display: 'flex',
           flexDirection: 'column',
           gap: '24px',
@@ -78,16 +98,46 @@ export default function EnrollmentForm() {
           name="name"
           control={control}
           render={({field}) => (
-            <TextField
-              {...field}
-              label="Nome Completo"
-              variant="outlined"
-              fullWidth
-              error={!!errors.name}
-              helperText={errors.name?.message}
-            />
+            <Box>
+              <TextField
+                {...field}
+                label="Nome Completo"
+                variant="outlined"
+                fullWidth
+                error={!!errors.name}
+                helperText={errors.name?.message}
+              />
+
+              {!errors.name?.message && (
+                <Typography component="p" sx={{
+                  fontSize: '12px',
+                  lineHeight: '16px',
+                  fontWeight: 400,
+                  marginLeft: '16px',
+                  marginTop: '4px'
+                }}>
+                  Preencha seu nome completo, sem abreviações, igual ao seu documento de identificação.{' '}
+                  <Typography
+                    component="a"
+                    href="https://estacio.br/"
+                    target="_blank"
+                    sx={{
+                      fontSize: '12px',
+                      lineHeight: '16px',
+                      fontWeight: 400,
+
+                      textDecoration: 'underline',
+                      color: 'text.primary'
+                    }}
+                  >
+                    Confira o exemplo.
+                  </Typography>
+                </Typography>
+              )}
+            </Box>
           )}
         />
+
         <Controller
           name="documentNumber"
           control={control}
@@ -208,11 +258,42 @@ export default function EnrollmentForm() {
                         fontWeight: 500,
                         lineHeight: 1.3,
                         color: errors.terms ? 'error.main' : 'inherit',
+                        '& a': {
+                          textDecoration: 'underline',
+                          color: 'inherit',
+                          '&:hover': {
+                            opacity: 0.8,
+                          }
+                        }
                       }}
                     >
-                      Li e concordo com os termos do edital, bem como com o tratamento dos meus dados para fins de
+                      Li e concordo com os{' '}
+                      <a
+                        href="https://estacio.br/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        termos do edital
+                      </a>
+                      , bem como com o tratamento dos meus dados para fins de
                       prospecção dos serviços educacionais prestados pela Estácio e demais instituições de ensino do
-                      mesmo Grupo Econômico, de acordo com a nossa política de privacidade.
+                      mesmo{' '}
+                      <a
+                        href="https://estacio.br/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Grupo Econômico
+                      </a>
+                      , de acordo com a nossa{' '}
+                      <a
+                        href="https://estacio.br/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        política de privacidade
+                      </a>
+                      .
                     </Typography>
                   }
                 />
