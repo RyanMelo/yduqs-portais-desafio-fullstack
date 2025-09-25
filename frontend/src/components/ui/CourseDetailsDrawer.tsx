@@ -99,6 +99,7 @@ export default function CourseDetailsDrawer({
           <Typography
             variant="h5"
             sx={(theme) => ({
+              fontFamily: 'Montserrat',
               fontWeight: 500,
               fontSize: 32,
               lineHeight: '1.2em',

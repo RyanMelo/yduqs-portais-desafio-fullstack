@@ -29,10 +29,10 @@ export default function SecodaryHeader({title, subtitle}: SecodaryHeaderProps) {
         component="h2"
         gutterBottom
         sx={(theme) => ({
-          fontFamily: 'var(--font-monteserrat)',
+          fontFamily: 'Montserrat',
           fontWeight: '500',
           fontSize: '32px',
-          leder: 'none',
+          lineHeight: '1.2',
 
           [theme.breakpoints.down('md')]: {
             fontSize: '24px',

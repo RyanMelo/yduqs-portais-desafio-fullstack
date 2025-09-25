@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import "./globals.css";
 
-import { Inter } from 'next/font/google';
+import { Inter, Montserrat } from 'next/font/google';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '../theme';
 import MainHeader from "@/components/ui/MainHeader";
@@ -12,6 +12,12 @@ const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-roboto',
+});
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  variable: '--font-montserrat',
 });
 
 export const metadata: Metadata = {
@@ -25,16 +31,16 @@ export default function RootLayout({
 children: React.ReactNode;
 }>) {
   return (
-  <html lang="pt-br">
-    <body className={inter.variable}>
-    <AppRouterCacheProvider>
-      <ThemeProvider theme={theme}>
-        <>
-          <MainHeader />
-          {children}
-        </>
-      </ThemeProvider>
-    </AppRouterCacheProvider>
+  <html lang="pt-BR" className={`${inter.variable} ${montserrat.variable}`}>
+    <body>
+      <AppRouterCacheProvider>
+        <ThemeProvider theme={theme}>
+          <>
+            <MainHeader />
+            {children}
+          </>
+        </ThemeProvider>
+      </AppRouterCacheProvider>
     </body>
   </html>
 )}
