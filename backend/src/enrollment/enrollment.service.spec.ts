@@ -52,7 +52,7 @@ describe('EnrollmentService', () => {
 
     const result = await enrollmentService.saveEnrollment(enrollmentMock);
 
-    expect(result).toBeDefined();
+    expect(result.id).toBeDefined();
   });
 
   it('should be return conflict', async () => {
@@ -77,10 +77,8 @@ describe('EnrollmentService', () => {
     } catch (error) {
       expect(error).toBeInstanceOf(ConflictException);
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       expect(error.response.error).toEqual('Error ao cadastrar matricula.');
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       expect(error.response.message).toEqual([
         'Já existe uma matricula cadastrado com este e-mail ou CPF.',
       ]);
