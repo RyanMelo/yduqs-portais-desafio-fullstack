@@ -34,7 +34,7 @@ const courses: Course[] = [
   {
     id: "2",
     cardType: "WithDescription",
-    modality: "EAD",
+    modality: "DISTANCE",
     address: "BARRA DA TIJUCA - TOM JOB...",
     street: "AV. DAS AMÉRICAS, 4.200, BLOCO 11 - BARRA DA TIJUCA...",
     description: "Inscreva-se para saber tudo sobre os valores e garantir a sua vaga!",

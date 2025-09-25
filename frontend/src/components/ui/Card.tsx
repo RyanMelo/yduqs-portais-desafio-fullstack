@@ -41,7 +41,7 @@ export default function Card({course, onClick}: CardProps) {
             </>
           )}
 
-          {course.modality === 'EAD' && (
+          {course.modality === 'DISTANCE' && (
             <Typography sx={{fontSize: '16px', fontWeight: '500'}}>Digital (EaD)</Typography>
           )}
         </Box>

@@ -1,5 +1,5 @@
 type CardType = "WithPrice" | "WithDescription"
-type Modality = "INPERSON" | "EAD"
+type Modality = "INPERSON" | "DISTANCE"
 
 type PaymentOptions = {
   installments: number,
