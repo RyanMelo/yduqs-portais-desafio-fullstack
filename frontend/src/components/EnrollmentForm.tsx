@@ -19,6 +19,9 @@ import {
   birthdateValidation,
 } from "@/utils/zodValidations";
 import { isValidCPF } from "@/utils/valideDocumentNumber";
+import { usePaymentSelectedStore } from "@/store/courseStore";
+import { useEffect } from "react";
+import { redirect } from "next/navigation";
 
 const enrollmentSchema = z.object({
   name: nameAnsLastNameValidation,
@@ -44,6 +47,12 @@ export default function EnrollmentForm() {
   const phoneInputRef = useMaskito({options: phoneMask});
   const yearInputRef = useMaskito({options: yearMask});
 
+  const paymentOption = usePaymentSelectedStore((state) => state.paymentOption);
+
+  useEffect(() => {
+    console.log({paymentOption})
+  }, [paymentOption])
+
   const {
     control,
     handleSubmit,
@@ -66,6 +75,10 @@ export default function EnrollmentForm() {
   const onSubmit = (data: EnrollmentFormData) => {
     console.log(data);
   };
+
+  if (!paymentOption) {
+    return redirect('/');
+  }
 
   return (
     <ThemeProvider theme={theme}>
