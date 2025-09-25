@@ -72,6 +72,16 @@ const theme = createTheme({
             },
           },
         },
+        {
+          props: { color: "error", variant: "contained" },
+          style: {
+            backgroundColor: "#E0E0E0",
+            color: "#A0A0A0",
+            "&:hover": {
+              backgroundColor: "#E0E0E0",
+            },
+          },
+        },
       ],
     },
     MuiContainer: {
