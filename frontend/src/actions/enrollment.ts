@@ -1,3 +1,5 @@
+'use server'
+
 import { Modality } from "@/types/Courses";
 
 export type EnrollmentData = {
