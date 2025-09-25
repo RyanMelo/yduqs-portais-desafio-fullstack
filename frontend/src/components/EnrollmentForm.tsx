@@ -29,7 +29,7 @@ const enrollmentSchema = z.object({
   documentNumber: z.string().refine(isValidCPF, {message: "CPF inválido"}),
   birthdate: birthdateValidation,
   email: z.email("E-mail inválido"),
-  phone: z.string().min(1, "Telefone é obrigatório"),
+  phone: z.string("Telefone é obrigatório").min(16, "Telefone é inválido"),
   highSchoolGraduation: z
     .number("O ano de término do ensino médio é obrigatório")
     .min(1900, "Ano de conclusão inválido")
