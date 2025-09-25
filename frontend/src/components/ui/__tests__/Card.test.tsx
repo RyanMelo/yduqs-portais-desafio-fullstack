@@ -17,6 +17,15 @@ const mockCourseInPerson: Course = {
   description: '',
 };
 
+const mockCourseDistance: Course = {
+  id: '2',
+  modality: 'DISTANCE',
+  cardType: 'WithDescription',
+  description: 'Ensino digital a distância',
+  address: 'Faculdade EAD',
+  street: '456 Rua de teste',
+};
+
 describe('Card component', () => {
   it('should be renders INPERSON course card correctly', () => {
     const handleClick = jest.fn();
@@ -39,6 +48,24 @@ describe('Card component', () => {
 
     expect(screen.getByText('Faculdade de Teste')).toBeInTheDocument();
     expect(screen.getByText('123 Rua de teste')).toBeInTheDocument();
+
+    const button = screen.getByRole('button', { name: /Avançar/i });
+    expect(button).toBeInTheDocument();
+    fireEvent.click(button);
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('should be renders DISTANCE course card correctly', () => {
+    const handleClick = jest.fn();
+    render(<Card course={mockCourseDistance} onClick={handleClick} />);
+
+    expect(screen.getByText('Digital (EaD)')).toBeInTheDocument();
+
+    expect(screen.getByText('Ensino digital a distância')).toBeInTheDocument();
+    expect(screen.getByTestId('InfoOutlineIcon')).toBeInTheDocument();
+
+    expect(screen.getByText('Faculdade EAD')).toBeInTheDocument();
+    expect(screen.getByText('456 Rua de teste')).toBeInTheDocument();
 
     const button = screen.getByRole('button', { name: /Avançar/i });
     expect(button).toBeInTheDocument();
